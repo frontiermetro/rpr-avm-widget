@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,32 +37,43 @@
   <h1>🏡 Run The Comps: RPR Value Estimator</h1>
   <p>Start typing your U.S. property address:</p>
   <input id="address" type="text" placeholder="123 Main St, City, ST ZIP" />
-  <button onclick="loadWidget()">Get Value Estimate</button>
+  <button onclick="submitAddress()">Get Value Estimate</button>
 
   <div id="widget-container"></div>
 
   <script>
     let autocomplete;
+
     function initAutocomplete() {
       const input = document.getElementById("address");
       autocomplete = new google.maps.places.Autocomplete(input, {
         componentRestrictions: { country: "us" },
         types: ["address"]
       });
+
+      // Pre-fill the input if address is in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const prefill = urlParams.get("address");
+      if (prefill) {
+        input.value = prefill;
+        loadWidget(prefill);
+      }
     }
 
-    function loadWidget() {
+    function submitAddress() {
       const address = document.getElementById("address").value;
-
       if (!address || !address.includes(",")) {
         alert("Please enter or select a full U.S. address.");
         return;
       }
 
-      // Clear previous widget
-      document.getElementById("widget-container").innerHTML = "";
+      const encoded = encodeURIComponent(address);
+      window.location.href = `?address=${encoded}`;
+    }
 
-      // Inject RPR options script
+    function loadWidget(address) {
+      const container = document.getElementById("widget-container");
+
       const optionsScript = document.createElement("script");
       optionsScript.innerHTML = `
         var rprAvmWidgetOptions = {
@@ -71,11 +83,9 @@
           ShowRprLinks: true
         };`;
 
-      // Inject widget script
       const widgetScript = document.createElement("script");
       widgetScript.src = "https://www.narrpr.com/widgets/avm-widget/widget.ashx/script";
 
-      const container = document.getElementById("widget-container");
       container.appendChild(optionsScript);
       container.appendChild(widgetScript);
     }
