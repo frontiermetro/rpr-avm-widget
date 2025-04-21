@@ -3,44 +3,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Run The Comps - RPR AVM (Static Test)</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 700px;
-      margin: 40px auto;
-      background: #f4f4f4;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #2D3142;
-      text-align: center;
-    }
-    .widget-container {
-      margin-top: 30px;
-      background: #fff;
-      padding: 10px;
-      border-radius: 8px;
-    }
-  </style>
+  <title>RPR Widget Static Test</title>
 </head>
 <body>
-  <h1>🏡 Run The Comps: RPR AVM Widget Test</h1>
-  <p>This page loads the AVM widget automatically for a static address:</p>
-  <p><strong>12616 Whispering Hills Dr, Dallas, TX 75243</strong></p>
+  <h1>RPR AVM Test</h1>
+  <p>This is a minimal test of the RPR AVM widget with a hardcoded address.</p>
 
-  <div class="widget-container">
-    <script>
-      var rprAvmWidgetOptions = {
-        Token: "FBD56679-99C3-4EC1-A72D-E409DFDCE21D",
-        Query: "12616 Whispering Hills Dr, Dallas, TX 75243",
-        CoBrandCode: "btsfirstinrealty",
-        ShowRprLinks: true
-      };
-    </script>
-    <script src="https://www.narrpr.com/widgets/avm-widget/widget.ashx/script"></script>
-  </div>
+  <script>
+    var rprAvmWidgetOptions = {
+      Token: "FBD56679-99C3-4EC1-A72D-E409DFDCE21D",
+      Query: "12616 Whispering Hills Dr, Dallas, TX 75243",
+      CoBrandCode: "btsfirstinrealty",
+      ShowRprLinks: true
+    };
+  </script>
+  <script src="https://www.narrpr.com/widgets/avm-widget/widget.ashx/script"></script>
 </body>
 </html>
