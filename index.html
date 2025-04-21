@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Run The Comps - RPR AVM Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      background: #f4f4f4;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2D3142;
+      text-align: center;
+    }
+    input, button {
+      font-size: 1rem;
+      padding: 10px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    #widget-container {
+      margin-top: 30px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+    }
+  </style>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqSBaoU7V4-rXgJ6qCh76pkSJGAUIuSos&libraries=places"></script>
+</head>
+<body>
+  <h1>🏡 Run The Comps: RPR Value Estimator</h1>
+  <p>Start typing your U.S. property address:</p>
+  <input id="address" type="text" placeholder="123 Main St, City, ST ZIP" />
+  <button onclick="loadWidget()">Get Value Estimate</button>
+
+  <div id="widget-container"></div>
+
+  <script>
+    let autocomplete;
+    function initAutocomplete() {
+      const input = document.getElementById("address");
+      autocomplete = new google.maps.places.Autocomplete(input, {
+        componentRestrictions: { country: "us" },
+        types: ["address"]
+      });
+    }
+
+    function loadWidget() {
+      const address = document.getElementById("address").value;
+
+      if (!address || !address.includes(",")) {
+        alert("Please enter or select a full U.S. address.");
+        return;
+      }
+
+      // Clear previous widget
+      document.getElementById("widget-container").innerHTML = "";
+
+      // Inject RPR options script
+      const optionsScript = document.createElement("script");
+      optionsScript.innerHTML = `
+        var rprAvmWidgetOptions = {
+          Token: "FBD56679-99C3-4EC1-A72D-E409DFDCE21D",
+          Query: "${address}",
+          CoBrandCode: "btsfirstinrealty",
+          ShowRprLinks: true
+        };`;
+
+      // Inject widget script
+      const widgetScript = document.createElement("script");
+      widgetScript.src = "https://www.narrpr.com/widgets/avm-widget/widget.ashx/script";
+
+      const container = document.getElementById("widget-container");
+      container.appendChild(optionsScript);
+      container.appendChild(widgetScript);
+    }
+
+    window.onload = initAutocomplete;
+  </script>
+</body>
+</html>
