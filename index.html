@@ -50,11 +50,8 @@
       background-color: #c3192d;
     }
 
-    iframe {
+    #rprWidget {
       margin-top: 2rem;
-      width: 100%;
-      height: 600px;
-      border: none;
     }
   </style>
 </head>
@@ -62,20 +59,36 @@
   <div class="container">
     <h1>Run The Comps AVM Tool</h1>
     <input type="text" id="addressInput" placeholder="Enter a U.S. property address" />
-    <button onclick="loadWidget()">Get Value</button>
-
-    <iframe id="rprWidget" src=""></iframe>
+    <button onclick="loadRPRWidget()">Get Value</button>
+    <div id="rprWidget"></div>
   </div>
 
+  <!-- RPR widget script -->
+  <script src="https://www.narrpr.com/widget-avm/widget-avm.min.js"></script>
+
   <script>
-    function loadWidget() {
-      const address = encodeURIComponent(document.getElementById("addressInput").value.trim());
+    function loadRPRWidget() {
+      const address = document.getElementById("addressInput").value.trim();
       if (!address) return;
 
-      const widgetSrc = `https://widget.rpr.me/widget-avm/?query=${address}&partnerToken=FBD56679-99C3-4EC1-A72D-E409DFDCE21D`; // Replace agentId with real one if needed
-      document.getElementById("rprWidget").src = widgetSrc;
+      // Clear previous widget content
+      document.getElementById("rprWidget").innerHTML = "";
+
+      // Inject new widget with updated address
+      RPRAVM.Widget({
+        targetElementId: "rprWidget",
+        address: address,
+        size: "250",
+        layout: "vertical",
+        showConfidence: true,
+        showRange: true,
+        showUpDown: true,
+        showUpdateDate: true,
+        showRPRLinks: true
+      });
     }
   </script>
 </body>
 </html>
+
 
