@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Run The Comps - AVM Tool</title>
+  <meta charset="UTF-8">
+  <title>Run The Comps - RPR AVM Tool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f3f3f3;
-      margin: 0;
       padding: 2rem;
     }
 
     .container {
       max-width: 600px;
       margin: auto;
-      background: white;
+      background: #fff;
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     h1 {
@@ -26,23 +25,22 @@
       color: #2D3142;
     }
 
-    input[type="text"] {
+    input, button {
       width: 100%;
       padding: 1rem;
       font-size: 1rem;
       margin-bottom: 1rem;
-      border: 1px solid #ccc;
       border-radius: 8px;
     }
 
+    input {
+      border: 1px solid #ccc;
+    }
+
     button {
-      width: 100%;
-      padding: 1rem;
-      font-size: 1rem;
       background-color: #E71D36;
       color: white;
       border: none;
-      border-radius: 8px;
       cursor: pointer;
     }
 
@@ -50,7 +48,7 @@
       background-color: #c3192d;
     }
 
-    #rprWidget {
+    #rprWidgetContainer {
       margin-top: 2rem;
     }
   </style>
@@ -59,36 +57,43 @@
   <div class="container">
     <h1>Run The Comps AVM Tool</h1>
     <input type="text" id="addressInput" placeholder="Enter a U.S. property address" />
-    <button onclick="loadRPRWidget()">Get Value</button>
-    <div id="rprWidget"></div>
+    <button onclick="loadRprWidget()">Get Value</button>
+    <div id="rprWidgetContainer"></div>
   </div>
 
-  <!-- RPR widget script -->
-  <script src="https://www.narrpr.com/widget-avm/widget-avm.min.js"></script>
-
   <script>
-    function loadRPRWidget() {
+    function loadRprWidget() {
+      const container = document.getElementById("rprWidgetContainer");
       const address = document.getElementById("addressInput").value.trim();
       if (!address) return;
 
-      // Clear previous widget content
-      document.getElementById("rprWidget").innerHTML = "";
+      // Clear any previous widget
+      container.innerHTML = '';
 
-      // Inject new widget with updated address
-      RPRAVM.Widget({
-        targetElementId: "rprWidget",
-        address: address,
-        size: "250",
-        layout: "vertical",
-        showConfidence: true,
-        showRange: true,
-        showUpDown: true,
-        showUpdateDate: true,
-        showRPRLinks: true
-      });
+      // Create the config script
+      const configScript = document.createElement("script");
+      configScript.type = "text/javascript";
+      configScript.innerHTML = `
+        var rprAvmWidgetOptions = {
+          Token: "FBD56679-99C3-4EC1-A72D-E409DFDCE21D",
+          Query: "${address}",
+          CoBrandCode: "btsfirstinrealty",
+          ShowRprLinks: true
+        };
+      `;
+
+      // Create the RPR loader script
+      const widgetScript = document.createElement("script");
+      widgetScript.type = "text/javascript";
+      widgetScript.src = "https://www.narrpr.com/widgets/avm-widget/widget.ashx/script";
+
+      // Append both scripts
+      container.appendChild(configScript);
+      container.appendChild(widgetScript);
     }
   </script>
 </body>
 </html>
+
 
 
