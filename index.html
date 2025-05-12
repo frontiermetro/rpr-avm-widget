@@ -56,44 +56,51 @@
 <body>
   <div class="container">
     <h1>Run The Comps AVM Tool</h1>
-    <input type="text" id="addressInput" placeholder="Enter a U.S. property address" />
-    <button onclick="loadRprWidget()">Get Value</button>
+    <form onsubmit="handleSubmit(event)">
+      <input type="text" id="addressInput" placeholder="Enter a U.S. property address" />
+      <button type="submit">Get Value</button>
+    </form>
     <div id="rprWidgetContainer"></div>
   </div>
 
   <script>
-    function loadRprWidget() {
-      const container = document.getElementById("rprWidgetContainer");
+    function handleSubmit(event) {
+      event.preventDefault();
       const address = document.getElementById("addressInput").value.trim();
       if (!address) return;
+      const encoded = encodeURIComponent(address);
+      window.location.href = `?address=${encoded}`;
+    }
 
-      // Clear any previous widget
-      container.innerHTML = '';
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
 
-      // Create the config script
+    const queryAddress = getQueryParam('address');
+    if (queryAddress) {
+      const decodedAddress = decodeURIComponent(queryAddress);
+      document.getElementById("addressInput").value = decodedAddress;
+
       const configScript = document.createElement("script");
-      configScript.type = "text/javascript";
       configScript.innerHTML = `
         var rprAvmWidgetOptions = {
           Token: "FBD56679-99C3-4EC1-A72D-E409DFDCE21D",
-          Query: "${address}",
+          Query: "${decodedAddress}",
           CoBrandCode: "btsfirstinrealty",
           ShowRprLinks: true
         };
       `;
+      document.getElementById("rprWidgetContainer").appendChild(configScript);
 
-      // Create the RPR loader script
       const widgetScript = document.createElement("script");
-      widgetScript.type = "text/javascript";
       widgetScript.src = "https://www.narrpr.com/widgets/avm-widget/widget.ashx/script";
-
-      // Append both scripts
-      container.appendChild(configScript);
-      container.appendChild(widgetScript);
+      document.getElementById("rprWidgetContainer").appendChild(widgetScript);
     }
   </script>
 </body>
 </html>
+
 
 
 
