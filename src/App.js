@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { getZestimateAlt } from './apiService';
 import AVMComparison from './AVMComparison';
 
+console.log("Zillow Host ENV:", process.env.REACT_APP_ZILLOW_HOST);
+
 function App() {
   const [address, setAddress] = useState('');
   const [zillowEstimate, setZillowEstimate] = useState(null);
