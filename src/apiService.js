@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_KEY = process.env.REACT_APP_RAPIDAPI_KEY;
-const ZILLOW_ALT_HOST = 'zillow-com1.p.rapidapi.com'; // New host
+const ZILLOW_ALT_HOST = process.env.REACT_APP_ZILLOW_HOST;
 
 export async function getZestimateAlt(address) {
   try {
