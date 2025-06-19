@@ -6,19 +6,19 @@ const API_URL = 'https://api.bridgedataoutput.com/api/v2/zestimates_v2/zestimate
 export async function fetchZestimate(address) {
   try {
     const response = await axios.get(API_URL, {
-      params: { address },
-      headers: {
-        Authorization: `Bearer ${SERVER_TOKEN}`,
+      params: {
+        access_token: SERVER_TOKEN,
+        address: address,
       },
     });
 
-    console.log("Zillow API raw response:", response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching Zestimate:', error);
     return null;
   }
 }
+
 
 
 
