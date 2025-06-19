@@ -12,7 +12,7 @@ function App() {
   console.log("Fetching Zestimate for:", address); // Confirm function fires
 
   const data = await fetchZestimate(address);
-  console.log("Zillow API response:", data); // Confirm we get a response
+  document.body.insertAdjacentHTML('beforeend', `<pre style="background:#eee;padding:1em;">Zillow ENV: ${process.env.REACT_APP_ZILLOW_BROWSER_TOKEN}</pre>`);
 
   if (data?.zestimate?.amount) {
     setZillowEstimate(data.zestimate.amount);
@@ -20,8 +20,6 @@ function App() {
     setZillowEstimate("Unavailable or missing data");
   }
 };
-
-
 
   return (
     <div style={{ padding: '2rem' }}>
