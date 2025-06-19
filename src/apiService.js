@@ -12,13 +12,14 @@ export async function fetchZestimate(address) {
       },
     });
 
-    console.log("Zillow API response:", response.data);
+    console.log("Zillow API raw response:", response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching Zestimate:', error);
     return null;
   }
 }
+
 
 
 

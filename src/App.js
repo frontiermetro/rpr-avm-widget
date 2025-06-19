@@ -7,11 +7,11 @@ function App() {
   const [zillowEstimate, setZillowEstimate] = useState(null);
 
   const handleSearch = async () => {
-    console.log("Fetching Zestimate for:", address);
+    console.log("Searching for:", address);
     const data = await fetchZestimate(address);
-    console.log("API data:", data);
+    console.log("Fetched data:", data);
 
-    if (data?.bundle?.[0]?.zestimate) {
+    if (data?.bundle?.length > 0 && data.bundle[0].zestimate) {
       setZillowEstimate(data.bundle[0].zestimate);
     } else {
       setZillowEstimate("Unavailable or missing data");
@@ -38,6 +38,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
