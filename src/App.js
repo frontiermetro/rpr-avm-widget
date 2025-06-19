@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import { getZestimateAlt } from './apiService';
+import { fetchZestimate } from './apiService';
 import AVMComparison from './AVMComparison';
-
-console.log("Zillow Host ENV:", process.env.REACT_APP_ZILLOW_HOST);
 
 function App() {
   const [address, setAddress] = useState('');
   const [zillowEstimate, setZillowEstimate] = useState(null);
 
   const handleSearch = async () => {
-    const data = await getZestimateAlt(address);
-    if (data?.value) {
-      setZillowEstimate(data.value);
-    } else {
+    try {
+      const data = await fetchZestimate(address);
+      if (data?.zestimate?.amount) {
+        setZillowEstimate(data.zestimate.amount);
+      } else {
+        setZillowEstimate(null);
+      }
+    } catch (error) {
+      console.error('Failed to fetch Zestimate:', error);
       setZillowEstimate(null);
     }
   };
@@ -27,7 +30,10 @@ function App() {
         placeholder="Enter address"
         style={{ padding: '0.5rem', width: '300px' }}
       />
-      <button onClick={handleSearch} style={{ marginLeft: '1rem', padding: '0.5rem' }}>
+      <button
+        onClick={handleSearch}
+        style={{ marginLeft: '1rem', padding: '0.5rem' }}
+      >
         Get Estimates
       </button>
 
@@ -37,5 +43,6 @@ function App() {
 }
 
 export default App;
+
 
 
