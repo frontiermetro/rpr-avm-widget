@@ -11,12 +11,15 @@ export async function fetchZestimate(address) {
         Authorization: `Bearer ${SERVER_TOKEN}`,
       },
     });
+
+    console.log("Zillow API response:", response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching Zestimate:', error);
     return null;
   }
 }
+
 
 
 

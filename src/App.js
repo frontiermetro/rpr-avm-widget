@@ -7,13 +7,14 @@ function App() {
   const [zillowEstimate, setZillowEstimate] = useState(null);
 
   const handleSearch = async () => {
-    const result = await fetchZestimate(address);
-    console.log("Zillow API result:", result);
+    console.log("Fetching Zestimate for:", address);
+    const data = await fetchZestimate(address);
+    console.log("API data:", data);
 
-    if (result?.bundle?.[0]?.zestimate) {
-      setZillowEstimate(result.bundle[0].zestimate);
+    if (data?.bundle?.[0]?.zestimate) {
+      setZillowEstimate(data.bundle[0].zestimate);
     } else {
-      setZillowEstimate("Unavailable");
+      setZillowEstimate("Unavailable or missing data");
     }
   };
 
@@ -28,7 +29,7 @@ function App() {
         style={{ padding: '0.5rem', width: '300px' }}
       />
       <button onClick={handleSearch} style={{ marginLeft: '1rem', padding: '0.5rem' }}>
-        Run The Comps
+        Get Estimates
       </button>
 
       <AVMComparison zillowEstimate={zillowEstimate} />
@@ -37,6 +38,8 @@ function App() {
 }
 
 export default App;
+
+
 
 
 
