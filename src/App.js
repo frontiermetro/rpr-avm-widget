@@ -7,18 +7,16 @@ function App() {
   const [zillowEstimate, setZillowEstimate] = useState(null);
 
   const handleSearch = async () => {
-    try {
-      const data = await fetchZestimate(address);
-      if (data?.zestimate?.amount) {
-        setZillowEstimate(data.zestimate.amount);
-      } else {
-        setZillowEstimate(null);
-      }
-    } catch (error) {
-      console.error('Failed to fetch Zestimate:', error);
-      setZillowEstimate(null);
-    }
-  };
+  const data = await fetchZestimate(address);
+  console.log("Zillow API response:", data); 
+
+  if (data?.zestimate?.amount) {
+    setZillowEstimate(data.zestimate.amount);
+  } else {
+    setZillowEstimate(null);
+  }
+};
+
 
   return (
     <div style={{ padding: '2rem' }}>
