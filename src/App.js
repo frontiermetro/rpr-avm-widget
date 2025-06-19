@@ -5,17 +5,13 @@ import AVMComparison from './AVMComparison';
 function App() {
   const [address, setAddress] = useState('');
   const [zillowEstimate, setZillowEstimate] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   const handleSearch = async () => {
-    console.log('Fetching Zestimate for address:', address);
-    setLoading(true);
-    const data = await fetchZestimate(address);
-    console.log('Zillow API response:', data);
-    setLoading(false);
+    const result = await fetchZestimate(address);
+    console.log("Zillow API result:", result);
 
-    if (data?.zestimate) {
-      setZillowEstimate(data.zestimate);
+    if (result?.bundle?.[0]?.zestimate) {
+      setZillowEstimate(result.bundle[0].zestimate);
     } else {
       setZillowEstimate("Unavailable");
     }
@@ -32,7 +28,7 @@ function App() {
         style={{ padding: '0.5rem', width: '300px' }}
       />
       <button onClick={handleSearch} style={{ marginLeft: '1rem', padding: '0.5rem' }}>
-        {loading ? 'Loading...' : 'Run The Comps'}
+        Run The Comps
       </button>
 
       <AVMComparison zillowEstimate={zillowEstimate} />
