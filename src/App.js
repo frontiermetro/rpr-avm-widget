@@ -2,24 +2,21 @@ import React, { useState } from 'react';
 import { fetchZestimate } from './apiService';
 import AVMComparison from './AVMComparison';
 
-console.log("Zillow Client ID (public):", process.env.REACT_APP_ZILLOW_CLIENT_ID);
-
 function App() {
   const [address, setAddress] = useState('');
   const [zillowEstimate, setZillowEstimate] = useState(null);
 
- const handleSearch = async () => {
-  console.log("Fetching Zestimate for:", address); // Confirm function fires
+  const handleSearch = async () => {
+    console.log("Fetching Zestimate for:", address);
+    const data = await fetchZestimate(address);
+    console.log("Zillow API response:", data);
 
-  const data = await fetchZestimate(address);
-  document.body.insertAdjacentHTML('beforeend', `<pre style="background:#eee;padding:1em;">Zillow ENV: ${process.env.REACT_APP_ZILLOW_BROWSER_TOKEN}</pre>`);
-
-  if (data?.zestimate?.amount) {
-    setZillowEstimate(data.zestimate.amount);
-  } else {
-    setZillowEstimate("Unavailable or missing data");
-  }
-};
+    if (data?.zestimate) {
+      setZillowEstimate(data.zestimate);
+    } else {
+      setZillowEstimate("Unavailable or missing data");
+    }
+  };
 
   return (
     <div style={{ padding: '2rem' }}>
